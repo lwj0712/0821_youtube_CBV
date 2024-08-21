@@ -49,6 +49,18 @@ class PostDetailView(DetailView):
         context = super().get_context_data(**kwargs)
         context['comment_form'] = CommentForm()
         return context
+    
+    def get_object(self, queryset=None):
+        '''
+        말 그대로 PostDetailView.as_view()에서 사용할 object를 반환합니다.
+        반환 하는데 object를 변경할 수 있는 함수입니다.
+        여기서 원하는 쿼리셋이나 object를 추가한 후 템플릿으로 전달할 수 있습니다.
+        '''
+        pk = self.kwargs.get('pk')
+        post = Post.objects.get(pk=pk)
+        post.view_count += 1
+        post.save()
+        return super().get_object(queryset)
 
 post_detail = PostDetailView.as_view()
 
