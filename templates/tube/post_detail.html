@@ -1,4 +1,3 @@
-
 <p>{{object.title}}</p>
 <p>{{object.content}}</p>
 
@@ -9,6 +8,23 @@
 {% endif %}
 
 <hr>
+<section>
+    <h3>댓글</h3>
+    {% for comment in post.comments.all %}
+        <p>{{comment.message}}</p>
+        <p>{{comment.author}}</p>
+        <p>{{comment.updated_at}}</p>
+    {% endfor %}
+</section>
+
+<section>
+    <h3>댓글 작성</h3>
+    <form action="#" method="post">
+        {% csrf_token %}
+        {{ comment_form.as_p }}
+        <input type="submit" value="댓글 작성">
+    </form>
+</section>
 
 <a href="{% url 'tube:post_list' %}">목록</a>
 {% if user == post.author %}
