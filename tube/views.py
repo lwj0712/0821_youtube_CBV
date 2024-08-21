@@ -1,5 +1,7 @@
 from typing import Any
 from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
+from django.db import models
+from django.db.models.query import QuerySet
 from django.http import HttpRequest, HttpResponse
 from django.shortcuts import render
 from django.views.generic import (
@@ -18,6 +20,13 @@ from django.contrib.auth.decorators import login_required
 
 class PostListView(ListView):
     model = Post
+
+    def get_queryset(self):
+        qs = super().get_queryset()
+        q = self.request.GET.get('q', '')
+        if q:
+            qs = qs.filter(title__icontains=q)
+        return qs
 
 
 post_list = PostListView.as_view()
@@ -57,6 +66,7 @@ class PostDetailView(DetailView):
         여기서 원하는 쿼리셋이나 object를 추가한 후 템플릿으로 전달할 수 있습니다.
         '''
         pk = self.kwargs.get('pk')
+        print(self.kwargs)        # what does this code do??
         post = Post.objects.get(pk=pk)
         post.view_count += 1
         post.save()
