@@ -68,3 +68,22 @@ class PostDeleteView(UserPassesTestMixin, DeleteView):
 
 
 post_delete = PostDeleteView.as_view()
+
+
+class PostDetailView(DetailView):
+    model = Post
+    # context_object_name = 'licat_objects' # {{licat_objects.title}} 이런식으로 사용 가능
+
+    def get_context_data(self, **kwargs):
+        '''
+        여기서 원하는 쿼리셋이나 object를 추가한 후 템플릿으로 전달할 수 있습니다.
+        '''
+        context = super().get_context_data(**kwargs)
+        print('------------')
+        print(context)
+        print(type(context))
+        print(dir(context))
+        print('------------')
+        return context
+
+post_detail = PostDetailView.as_view()
