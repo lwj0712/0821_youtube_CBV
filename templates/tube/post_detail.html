@@ -19,7 +19,7 @@
 
 <section>
     <h3>댓글 작성</h3>
-    <form action="#" method="post">
+    <form action="{% url 'tube:comment_new' post.pk %}" method="post">
         {% csrf_token %}
         {{ comment_form.as_p }}
         <input type="submit" value="댓글 작성">
